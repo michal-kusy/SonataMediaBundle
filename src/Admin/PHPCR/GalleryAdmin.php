@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\MediaBundle\Admin\PHPCR;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\MediaBundle\Admin\GalleryAdmin as BaseGalleryAdmin;
 
 /**
@@ -63,7 +63,7 @@ class GalleryAdmin extends BaseGalleryAdmin
 //            ->add('context')
     }
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         // Allow path in id parameter
         $collection->add('view', $this->getRouterIdParameter().'/view', [], ['id' => '.+', '_method' => 'GET']);

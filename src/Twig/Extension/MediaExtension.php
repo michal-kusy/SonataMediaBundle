@@ -21,12 +21,12 @@ use Sonata\MediaBundle\Twig\TokenParser\PathTokenParser;
 use Sonata\MediaBundle\Twig\TokenParser\ThumbnailTokenParser;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
-use Twig\Extension\InitRuntimeInterface;
+use Twig\Extension\RuntimeExtensionInterface;
 
 /**
  * @final since sonata-project/media-bundle 3.21.0
  */
-class MediaExtension extends AbstractExtension implements InitRuntimeInterface
+class MediaExtension extends AbstractExtension implements RuntimeExtensionInterface
 {
     /**
      * @var Pool
