@@ -47,7 +47,8 @@ class MediaAdminController extends Controller
         $parameters['media_pool'] = $this->get('sonata.media.pool');
         $parameters['persistent_parameters'] = $this->admin->getPersistentParameters();
 
-        return parent::renderWithExtraParams($view, $parameters, $response);
+        return parent::render($view, $parameters, $response);
+        //TODO check why this leads to endless loop -- return parent::renderWithExtraParams($view, $parameters, $response);
     }
 
     public function listAction(?Request $request = null): Response
