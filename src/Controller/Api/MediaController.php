@@ -372,7 +372,7 @@ class MediaController
      */
     protected function handleWriteMedium(Request $request, MediaInterface $media, MediaProviderInterface $provider)
     {
-        $form = $this->formFactory->createNamed(null, ApiMediaType::class, $media, [
+        $form = $this->formFactory->createNamed('', ApiMediaType::class, $media, [
             'provider_name' => $provider->getName(),
             'csrf_protection' => false,
         ]);

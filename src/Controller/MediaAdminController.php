@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class MediaAdminController extends Controller
 {
-    public function createAction(?Request $request = null)
+    public function createAction(?Request $request = null): Response
     {
         $this->admin->checkAccess('create');
 
@@ -39,10 +39,10 @@ class MediaAdminController extends Controller
             ]);
         }
 
-        return parent::createAction();
+        return parent::createAction($request);
     }
 
-    public function render($view, array $parameters = [], ?Response $response = null)
+    public function render($view, array $parameters = [], ?Response $response = null): Response
     {
         $parameters['media_pool'] = $this->get('sonata.media.pool');
         $parameters['persistent_parameters'] = $this->admin->getPersistentParameters();
@@ -50,7 +50,7 @@ class MediaAdminController extends Controller
         return parent::renderWithExtraParams($view, $parameters, $response);
     }
 
-    public function listAction(?Request $request = null)
+    public function listAction(?Request $request = null): Response
     {
         $this->admin->checkAccess('list');
 

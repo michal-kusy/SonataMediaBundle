@@ -424,7 +424,7 @@ class GalleryController
      */
     protected function handleWriteGalleryItem(GalleryInterface $gallery, MediaInterface $media, ?GalleryItemInterface $galleryItem = null, Request $request)
     {
-        $form = $this->formFactory->createNamed(null, ApiGalleryItemType::class, $galleryItem, [
+        $form = $this->formFactory->createNamed('', ApiGalleryItemType::class, $galleryItem, [
             'csrf_protection' => false,
         ]);
 
@@ -519,7 +519,7 @@ class GalleryController
     {
         $gallery = $id ? $this->getGallery($id) : null;
 
-        $form = $this->formFactory->createNamed(null, ApiGalleryType::class, $gallery, [
+        $form = $this->formFactory->createNamed('', ApiGalleryType::class, $gallery, [
             'csrf_protection' => false,
         ]);
 

@@ -37,20 +37,21 @@ class GalleryAdmin extends BaseGalleryAdmin
         $this->root = $root;
     }
 
-    public function createQuery($context = 'list')
+//TODO test && remove
+//    public function createQuery($context = 'list')
+//    {
+//        $query = $this->getModelManager()->createQuery($this->getClass(), 'a', $this->root);
+//
+//        foreach ($this->extensions as $extension) {
+//            $extension->configureQuery($this, $query, $context);
+//        }
+//
+//        return $query;
+//    }
+
+    public function id(object $model): ?string
     {
-        $query = $this->getModelManager()->createQuery($this->getClass(), 'a', $this->root);
-
-        foreach ($this->extensions as $extension) {
-            $extension->configureQuery($this, $query, $context);
-        }
-
-        return $query;
-    }
-
-    public function id($object)
-    {
-        return $this->getUrlsafeIdentifier($object);
+        return $this->getUrlsafeIdentifier($model);
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper): void

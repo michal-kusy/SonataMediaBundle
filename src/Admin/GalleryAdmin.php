@@ -115,7 +115,7 @@ class GalleryAdmin extends AbstractAdmin
                 ])
                 ->add('enabled', null, ['required' => false])
                 ->add('name')
-                ->ifTrue($formats)
+                ->ifTrue(count($formats) > 0)
                     ->add('defaultFormat', ChoiceType::class, ['choices' => $formats])
                 ->ifEnd()
             ->end()

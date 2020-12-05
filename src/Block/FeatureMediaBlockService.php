@@ -100,7 +100,7 @@ class FeatureMediaBlockService extends MediaBlockService
 
     public function getBlockMetadata($code = null)
     {
-        return new Metadata($this->getName(), (null !== $code ? $code : $this->getName()), false, 'SonataMediaBundle', [
+        return new Metadata($this->getName(), (null !== $code ? $code : $this->getName()), null, 'SonataMediaBundle', [
             'class' => 'fa fa-picture-o',
         ]);
     }
