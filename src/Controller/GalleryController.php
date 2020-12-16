@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\MediaBundle\Controller;
 
+use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,6 +23,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GalleryController extends AbstractController
 {
+    private $pool;
+
+    public function __construct(Pool $sonataMediaPool)
+    {
+        $this->pool = $sonataMediaPool;
+    }
+
     /**
      * @return Response
      */

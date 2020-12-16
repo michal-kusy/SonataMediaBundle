@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\MediaBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +25,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GalleryAdminController extends Controller
 {
+    private $pool;
+
+    public function __construct(Pool $sonataMediaPool)
+    {
+        $this->pool = $sonataMediaPool;
+    }
+
     /**
      * @param string   $view
      * @param Response $response
@@ -32,10 +40,10 @@ class GalleryAdminController extends Controller
      */
     protected function render(string $view, array $parameters = [], Response $response = null): Response
     {
-        $parameters['media_pool'] = $this->get('sonata.media.pool');
+        $parameters['media_pool'] = $this->pool;
         $parameters['persistent_parameters'] = $this->admin->getPersistentParameters();
 
-        return parent::renderWithExtraParams($view, $parameters, $response);
+        return parent::render($view, $parameters, $response);
     }
 
     /**
@@ -61,11 +69,14 @@ class GalleryAdminController extends Controller
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->render($this->admin->getTemplate('list'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
+                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
+                $this->admin->getExportFormats(),
         ]);
     }
 

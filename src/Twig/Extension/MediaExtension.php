@@ -48,10 +48,11 @@ class MediaExtension extends AbstractExtension implements RuntimeExtensionInterf
      */
     protected $environment;
 
-    public function __construct(Pool $mediaService, ManagerInterface $mediaManager)
+    public function __construct(Pool $mediaService, ManagerInterface $mediaManager, ?Environment $environment = null)
     {
         $this->mediaService = $mediaService;
         $this->mediaManager = $mediaManager;
+        $this->environment = $environment;
     }
 
     public function getTokenParsers()
@@ -63,6 +64,7 @@ class MediaExtension extends AbstractExtension implements RuntimeExtensionInterf
         ];
     }
 
+    /** @deprecated  */
     public function initRuntime(Environment $environment): void
     {
         $this->environment = $environment;
@@ -152,7 +154,7 @@ class MediaExtension extends AbstractExtension implements RuntimeExtensionInterf
     public function render($template, array $parameters = [])
     {
         if (!isset($this->resources[$template])) {
-            $this->resources[$template] = $this->environment->loadTemplate($template);
+            $this->resources[$template] = $this->environment->load($template);
         }
 
         return $this->resources[$template]->render($parameters);

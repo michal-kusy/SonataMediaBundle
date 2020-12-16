@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\MediaBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,14 +25,21 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class MediaAdminController extends Controller
 {
+    private $pool;
+
+    public function __construct(Pool $sonataMediaPool)
+    {
+        $this->pool = $sonataMediaPool;
+    }
+
     public function createAction(?Request $request = null): Response
     {
         $this->admin->checkAccess('create');
 
         if (!$request->get('provider') && $request->isMethod('get')) {
-            $pool = $this->get('sonata.media.pool');
+            $pool = $this->pool;
 
-            return $this->render('@SonataMedia/MediaAdmin/select_provider.html.twig', [
+            return $this->renderWithExtraParams('@SonataMedia/MediaAdmin/select_provider.html.twig', [
                 'providers' => $pool->getProvidersByContext(
                     $request->get('context', $pool->getDefaultContext())
                 ),
@@ -44,7 +52,7 @@ class MediaAdminController extends Controller
 
     public function render($view, array $parameters = [], ?Response $response = null): Response
     {
-        $parameters['media_pool'] = $this->get('sonata.media.pool');
+        $parameters['media_pool'] = $this->pool;
         $parameters['persistent_parameters'] = $this->admin->getPersistentParameters();
 
         return parent::render($view, $parameters, $response);
@@ -65,7 +73,7 @@ class MediaAdminController extends Controller
 
         // set the default context
         if (!$filters || !\array_key_exists('context', $filters)) {
-            $context = $this->admin->getPersistentParameter('context', $this->get('sonata.media.pool')->getDefaultContext());
+            $context = $this->admin->getPersistentParameter('context', $this->pool->getDefaultContext());
         } else {
             $context = $filters['context']['value'];
         }
@@ -97,12 +105,15 @@ class MediaAdminController extends Controller
 
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        return $this->render($this->admin->getTemplate('list'), [
+        return $this->renderWithExtraParams($this->admin->getTemplateRegistry()->getTemplate('list'), [
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
             'root_category' => $rootCategory,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'export_formats' => $this->has('sonata.admin.admin_exporter') ?
+                $this->get('sonata.admin.admin_exporter')->getAvailableFormats($this->admin) :
+                $this->admin->getExportFormats(),
         ]);
     }
 
