@@ -32,6 +32,11 @@ class MediaAdminController extends Controller
         $this->pool = $sonataMediaPool;
     }
 
+    protected function getPool(): Pool
+    {
+        return $this->pool;
+    }
+
     public function createAction(?Request $request = null): Response
     {
         $this->admin->checkAccess('create');
