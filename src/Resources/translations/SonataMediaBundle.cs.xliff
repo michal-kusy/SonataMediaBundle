@@ -571,6 +571,10 @@
                 <source>form.label_icon</source>
                 <target>Ikona</target>
             </trans-unit>
+            <trans-unit id="error.image_too_small">
+                <source>error.image_too_small</source>
+                <target>Obrázek je příliš malý, požaduje nejméně rozměr %min_width% x %min_height%.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
